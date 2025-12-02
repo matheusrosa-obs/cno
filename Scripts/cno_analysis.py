@@ -36,6 +36,8 @@ df_obras_munic = df_obras_munic.with_columns(
 
 df_obras_munic.head()
 
+df_obras_munic.write_parquet(_resolve_path("Dados/Processados/obras_por_municipio.parquet"))
+
 ######## Metragem de obras por município ########
 df_area_munic = (
     df_cno.group_by(["codigo_municipio", "nome_municipio", "uf"])
@@ -52,3 +54,5 @@ df_area_munic = df_area_munic.with_columns(
 )
 
 df_area_munic.head()
+
+df_area_munic.write_parquet(_resolve_path("Dados/Processados/metragem_por_municipio.parquet"))
