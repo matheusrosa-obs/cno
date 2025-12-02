@@ -85,8 +85,11 @@ df_areas_filtro.head()
 df_cno = df_cno.join(df_areas_filtro, on="cno", how="left")
 
 df_cno = df_cno.filter(
-    (pl.col("categoria") == "Obra Nova") | (pl.col("categoria") == "Reforma")
+    (pl.col("categoria") == "Obra Nova") |
+    (pl.col("categoria") == "Reforma") |
+    (pl.col("categoria") == "Demolição")
 )
+
 df_cno.head()
 
 df_cno.write_parquet(_resolve_path("Dados/Processados/cno_tratado_filtrado.parquet"))
