@@ -3,6 +3,7 @@
 ######################################################
 import polars as pl
 from pathlib import Path
+import seaborn as sns
 
 ######## Configurando o caminho para a pasta raiz do projeto ########
 def _project_root() -> Path:
@@ -97,6 +98,9 @@ df_cno = df_cno.filter(
     (pl.col("destinacao") == "Conjunto habitacional popular")
 )
 
-df_cno.head()
+
+df_cno = df_cno.filter(
+    (pl.col("area_total") <= 500000)
+)
 
 df_cno.write_parquet(_resolve_path("Dados/Processados/cno_tratado_filtrado.parquet"))

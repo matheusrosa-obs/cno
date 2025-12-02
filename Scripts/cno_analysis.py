@@ -39,7 +39,11 @@ df_obras_munic.head()
 ######## Metragem de obras por município ########
 df_area_munic = (
     df_cno.group_by(["codigo_municipio", "nome_municipio", "uf"])
-    .agg(pl.sum("area_total").alias("total_metragem"))
+    .agg(
+        pl.sum("area_total")
+        .round(2)
+        .alias("total_metragem")
+    )
     .sort("total_metragem", descending=True)
 )
 
