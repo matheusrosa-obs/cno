@@ -19,6 +19,32 @@ def load_data(file_path: str | Path) -> pl.DataFrame:
     return pl.read_parquet(str(path))
 
 ######## Carregando os dados brutos ########
-df_cno = load_data("Dados/Processados/cno_tratado.parquet")
+df_cno = load_data("Dados/Processados/cno_tratado_filtrado.parquet")
 
 df_cno.head()
+
+######## Contagem de obras por município ########
+df_obras_munic = (
+    df_cno.group_by(["codigo_municipio", "nome_municipio", "uf"])
+    .agg(pl.len().alias("total_obras"))
+    .sort("total_obras", descending=True)
+)
+
+df_obras_munic = df_obras_munic.with_columns(
+    pl.col("codigo_municipio").cast(pl.Utf8)
+)
+
+df_obras_munic.head()
+
+######## Metragem de obras por município ########
+df_area_munic = (
+    df_cno.group_by(["codigo_municipio", "nome_municipio", "uf"])
+    .agg(pl.sum("area_total").alias("total_metragem"))
+    .sort("total_metragem", descending=True)
+)
+
+df_area_munic = df_area_munic.with_columns(
+    pl.col("codigo_municipio").cast(pl.Utf8)
+)
+
+df_area_munic.head()

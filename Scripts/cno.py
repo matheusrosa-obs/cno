@@ -90,6 +90,13 @@ df_cno = df_cno.filter(
     (pl.col("categoria") == "Demolição")
 )
 
+df_cno = df_cno.filter(
+    (pl.col("destinacao") == "Residencial unifamiliar") |
+    (pl.col("destinacao") == "Residencial multifamiliar") |
+    (pl.col("destinacao") == "Casa popular") |
+    (pl.col("destinacao") == "Conjunto habitacional popular")
+)
+
 df_cno.head()
 
 df_cno.write_parquet(_resolve_path("Dados/Processados/cno_tratado_filtrado.parquet"))
