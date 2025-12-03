@@ -25,7 +25,7 @@ df_cno.head()
 
 ######## Contagem de obras por município ########
 df_obras_munic = (
-    df_cno.group_by(["codigo_municipio", "nome_municipio", "uf"])
+    df_cno.group_by(["codigo_municipio", "nome_municipio", "uf", "destinacao", "categoria"])
     .agg(pl.len().alias("total_obras"))
     .sort("total_obras", descending=True)
 )
@@ -34,13 +34,13 @@ df_obras_munic = df_obras_munic.with_columns(
     pl.col("codigo_municipio").cast(pl.Utf8)
 )
 
-df_obras_munic.head()
+df_obras_munic.head(10)
 
 df_obras_munic.write_parquet(_resolve_path("Dados/Processados/obras_por_municipio.parquet"))
 
 ######## Metragem de obras por município ########
 df_area_munic = (
-    df_cno.group_by(["codigo_municipio", "nome_municipio", "uf"])
+    df_cno.group_by(["codigo_municipio", "nome_municipio", "uf", "destinacao", "categoria"])
     .agg(
         pl.sum("area_total")
         .round(2)
@@ -53,6 +53,6 @@ df_area_munic = df_area_munic.with_columns(
     pl.col("codigo_municipio").cast(pl.Utf8)
 )
 
-df_area_munic.head()
+df_area_munic.head(10)
 
 df_area_munic.write_parquet(_resolve_path("Dados/Processados/metragem_por_municipio.parquet"))
