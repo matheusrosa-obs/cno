@@ -56,3 +56,13 @@ df_area_munic = df_area_munic.with_columns(
 df_area_munic.head(10)
 
 df_area_munic.write_csv(_resolve_path("Dados/Processados/metragem_por_municipio.csv"))
+
+#################### OBRAS E METRAGEM POR MUNICIÍPIO ###################
+df_obras = df_cno.group_by(["codigo_municipio", "nome_municipio", "uf"]).agg(
+    pl.len().alias("total_obras"),
+    pl.sum("area_total").round(2).alias("total_metragem")
+).sort("total_obras", descending=True)
+
+df_obras.head()
+
+df_obras.write_excel(_resolve_path("Dados/Processados/obras_e_metragem_por_municipio.xlsx"))
