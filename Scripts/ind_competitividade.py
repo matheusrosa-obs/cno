@@ -77,27 +77,18 @@ df_cno = df_cno.join(
 df_cno = df_cno.filter(
     pl.col("ano_inicio") >= "2010",
     pl.col("uf") == "SC",
-    pl.col("categoria") == "Obra Nova"
+    pl.col("categoria") == "Obra Nova",
 )
 
 df_cno.head()
 
+df_cno = df_cno.filter(pl.col("cno") != "900206857075")
+
 ######## Análise exploratória inicial ########
 # Obras novas iniciadas por ano
-df_cno_inicios_ano = df_cno.group_by("ano_inicio").agg(
+df_cno_inicios_ano = df_cno.group_by(["ano_inicio", "nome_municipio"]).agg(
     pl.count().alias("total_inicios")
 ).sort("ano_inicio")
-
-fig = plt.figure(figsize=(10, 6))
-
-plt.bar(
-    df_cno_inicios_ano["ano_inicio"].to_list(),
-    df_cno_inicios_ano["total_inicios"].to_list()
-)
-
-plt.title("Inícios de obras por ano em SC (2010-2025)")
-plt.xticks(rotation=90)
-plt.show()
 
 # Obras novas iniciadas por ano e destinação
 df_cno_inicios_ano_dest = df_cno.group_by(["ano_inicio", "destinacao"]).agg(
@@ -113,20 +104,11 @@ df_cno_inicios_ano_dest = df_cno_inicios_ano_dest.pivot(
 df_cno_inicios_ano_dest.head()
 
 # Metragem de obras novas iniciadas por ano
-df_cno_area_ano = df_cno.group_by("ano_inicio").agg(
+df_cno_area_ano = df_cno.group_by(["ano_inicio", "nome_municipio"]).agg(
     pl.sum("area_total").alias("total_area_m2")
 ).sort("ano_inicio")
 
-fig = plt.figure(figsize=(10, 6))
-
-plt.bar(
-    df_cno_area_ano["ano_inicio"].to_list(),
-    df_cno_area_ano["total_area_m2"].to_list()
-)
-
-plt.title("Metragem de obras novas iniciadas por ano em SC (2010-2025)")
-plt.xticks(rotation=90)
-plt.show()
+print("Total de área em 2024:", df_cno_area_ano.filter(pl.col("ano_inicio") == "2024")["total_area_m2"].sum())
 
 # Metragem de obras novas iniciadas por ano e destinação
 df_cno_area_ano_dest = df_cno.group_by(["ano_inicio", "destinacao"]).agg(

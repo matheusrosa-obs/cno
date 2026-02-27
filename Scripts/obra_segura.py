@@ -62,11 +62,10 @@ df_cno = df_cno.with_columns(
 )
 
 df_cno = df_cno.filter(
-    (pl.col("ano_inicio") >= "2020"),
+    (pl.col("ano_inicio") >= "2015"),
+    (pl.col("uf") == "SC"),
     (pl.col("situacao") == 2)
 )
-
-df_cno = df_cno.filter(pl.col("cno") != "900206857075")
 
 ########################### DADOS DE AREAS ###########################
 df_areas = load_data("Dados/Brutos/cno_areas.csv")
@@ -89,21 +88,8 @@ df_cno = df_cno.join(df_areas_filtro, on="cno", how="left")
 
 df_cno.head()
 
+##################### FILTROS #####################
 df_cno = df_cno.filter(
-    (pl.col("categoria") == "Obra Nova") |
-    (pl.col("categoria") == "Reforma") |
-    (pl.col("categoria") == "Demolição")
+    pl.col("destinacao") == "Residencial multifamiliar",
+    pl.col("tipo_obra") == "Alvenaria"
 )
-
-df_cno = df_cno.filter(
-    (pl.col("destinacao") == "Residencial unifamiliar") |
-    (pl.col("destinacao") == "Residencial multifamiliar") |
-    (pl.col("destinacao") == "Casa popular") |
-    (pl.col("destinacao") == "Conjunto habitacional popular")
-)
-
-df_cno = df_cno.filter(
-    (pl.col("area_total") <= 500000)
-)
-
-df_cno.write_parquet(_resolve_path("Dados/Processados/cno_tratado_filtrado.parquet"))
