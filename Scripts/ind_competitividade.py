@@ -20,9 +20,9 @@ def load_data(file_path: str | Path) -> pl.DataFrame:
     return pl.read_csv(str(path), encoding="latin1")
 
 ######## Carregando os dados brutos ########
-df_dados = load_data("Dados/Brutos/cno.csv")
+df_dados = load_data("Dados/Brutos/11-2025/cno.csv")
 
-df_areas = load_data("Dados/Brutos/cno_areas.csv")
+df_areas = load_data("Dados/Brutos/11-2025/cno_areas.csv")
 
 df_areas.head()
 
