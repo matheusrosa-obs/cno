@@ -66,8 +66,6 @@ df_cno = df_cno.filter(
     (pl.col("situacao") == 2)
 )
 
-df_cno = df_cno.filter(pl.col("cno") != "900206857075")
-
 ########################### DADOS DE AREAS ###########################
 df_areas = load_data("Dados/Brutos/03-2026/cno_areas.csv")
 
@@ -95,12 +93,14 @@ df_cno = df_cno.filter(
     (pl.col("categoria") == "Demolição")
 )
 
+'''
 df_cno = df_cno.filter(
     (pl.col("destinacao") == "Residencial unifamiliar") |
     (pl.col("destinacao") == "Residencial multifamiliar") |
     (pl.col("destinacao") == "Casa popular") |
     (pl.col("destinacao") == "Conjunto habitacional popular")
 )
+'''
 
 df_cno = df_cno.filter(
     (pl.col("area_total") <= 500000)
