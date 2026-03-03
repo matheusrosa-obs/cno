@@ -34,6 +34,7 @@ df_cno = df_cno.select([
     pl.col("bairro"),
     pl.col("area_total"),
     pl.col("ano_inicio"),
+    pl.col("ano_final"),
     pl.col("categoria"),
     pl.col("destinacao"),
     pl.col("tipo_obra")

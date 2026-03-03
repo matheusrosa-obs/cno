@@ -62,8 +62,16 @@ df_cno = df_cno.with_columns(
 )
 
 df_cno = df_cno.filter(
-    (pl.col("ano_inicio") >= "2020"),
-    (pl.col("situacao") == 2)
+    (pl.col("ano_inicio") >= "2010"),
+    (pl.col("situacao") != 1),
+    (pl.col("situacao") != 3)
+)
+
+df_cno = df_cno.with_columns(
+    pl.when(pl.col("situacao") == 15)
+        .then(pl.col("data_situacao").str.slice(0, 4))
+        .otherwise(None)
+        .alias("ano_final")
 )
 
 ########################### DADOS DE AREAS ###########################
