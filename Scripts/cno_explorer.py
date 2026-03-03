@@ -35,10 +35,18 @@ df_cno = df_cno.select([
     pl.col("area_total"),
     pl.col("ano_inicio"),
     pl.col("ano_final"),
+    pl.col("situacao"),
     pl.col("categoria"),
     pl.col("destinacao"),
     pl.col("tipo_obra")
 ])
+
+df_cno = df_cno.with_columns(
+    pl.when(pl.col("situacao") == 2)
+    .then(1)
+    .otherwise(0)
+    .alias("obra_ativa")
+)
 
 df_cno = df_cno.with_columns([
     pl.col("nome_municipio").str.to_titlecase(),

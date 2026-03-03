@@ -62,7 +62,8 @@ df_cno = df_cno.with_columns(
 )
 
 df_cno = df_cno.filter(
-    (pl.col("ano_inicio") >= "2010"),
+    (pl.col("ano_inicio") >= "2018"),
+    (pl.col("ano_inicio") < "2026"),
     (pl.col("situacao") != 1),
     (pl.col("situacao") != 3)
 )
